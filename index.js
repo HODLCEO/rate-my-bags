@@ -9,17 +9,26 @@ app.use(express.static("public"));
 
 // Frame 1: Default - Show My Bags
 app.get("/frame", (req, res) => {
-  res.json({
-    image: "https://yourdomain.com/preview.png",
-    buttons: [
-      {
-        label: "Show my Bags",
-        action: "post",
-        target: "https://yourdomain.com/frame/rate"
-      }
-    ]
-  });
+  const html = `
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta property="og:title" content="Rate My Bags" />
+      <meta property="og:image" content="https://rate-my-bags-production.up.railway.app/public/preview.png" />
+      <meta name="fc:frame" content="vNext" />
+      <meta name="fc:frame:image" content="https://rate-my-bags-production.up.railway.app/public/preview.png" />
+      <meta name="fc:frame:button:1" content="Show My Bags" />
+      <meta name="fc:frame:post_url" content="https://rate-my-bags-production.up.railway.app/frame/rate" />
+    </head>
+    <body>
+      Rate My Bags Frame Active
+    </body>
+  </html>
+  `;
+  res.setHeader("Content-Type", "text/html");
+  res.send(html);
 });
+
 
 // Frame 2: Rate Buttons
 app.post("/frame/rate", (req, res) => {
